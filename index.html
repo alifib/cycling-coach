@@ -887,54 +887,108 @@ async function fetchActivities(days = 14) {
   }
 }
 
+function parseStravaLocal(s) {
+  // Strava's start_date_local is the rider's wall-clock time but inexplicably
+  // suffixed with "Z". Treat it as local: strip the Z so JS doesn't shift it to UTC.
+  if (!s) return null;
+  return new Date(s.replace(/Z$/, ''));
+}
+
+function scoreSlotActivity(ride, act) {
+  // Higher = better fit. Returns null if the activity is so wrong it shouldn't match.
+  const minutes = act.moving_time / 60;
+  if (minutes < 25) return null; // too short to be any planned ride
+
+  // 1. Duration fit: how close the activity is to the slot's target duration.
+  //    Penalize overshooting less than undershooting (a long ride filling a Z2 slot is fine,
+  //    but a 60-min ride filling a 150-min slot is not).
+  const ratio = minutes / ride.targetMin;
+  let durationScore;
+  if (ratio >= 0.85 && ratio <= 1.4) durationScore = 50;          // sweet spot
+  else if (ratio > 1.4 && ratio <= 2.0) durationScore = 30;       // overshoot
+  else if (ratio >= 0.65 && ratio < 0.85) durationScore = 25;     // a bit short
+  else if (ratio > 2.0) durationScore = 10;                        // way over
+  else durationScore = -20;                                        // way under
+
+  // 2. Day-of-week proximity: tiebreaker.
+  const actDay = parseStravaLocal(act.start_local).getDay();
+  let dayDist;
+  if (ride.id === 'sat') {
+    // Saturday or Sunday both fit
+    dayDist = Math.min(Math.abs(actDay - 6), Math.abs(actDay - 0));
+  } else {
+    dayDist = Math.abs(actDay - ride.dayIdx);
+  }
+  const dayScore = -dayDist * 8;
+
+  // 3. Long-ride affinity: a slot that wants 150+ min strongly prefers the longest available ride.
+  //    Conversely, the long ride should not be wasted on a short Z2 slot.
+  let affinityScore = 0;
+  if (ride.targetMin >= 140 && minutes >= 130) affinityScore += 25;
+  if (ride.targetMin <= 100 && minutes >= 180) affinityScore -= 30; // wrong slot for a long ride
+
+  return durationScore + dayScore + affinityScore;
+}
+
 function matchActivitiesToRides() {
-  // For each ride slot in the current week, find best-matching activity from cached.
   if (!state.cachedActivities || state.cachedActivities.length === 0) return;
 
   const monday = new Date(state.weekStartDate);
   const rides = getRides(state.currentWeek);
-  const used = new Set();
 
-  // Activities within this week, sorted by date
+  // Activities within this week (using LOCAL time)
   const weekActs = state.cachedActivities.filter(a => {
-    const d = new Date(a.start);
+    const d = parseStravaLocal(a.start_local || a.start);
+    if (!d) return false;
     const dayDiff = Math.floor((d - monday) / 86400000);
     return dayDiff >= 0 && dayDiff < 7;
-  }).sort((a,b) => new Date(a.start) - new Date(b.start));
+  });
 
+  // Build all (ride, activity, score) pairs, keep only viable ones
+  const pairs = [];
   rides.forEach(ride => {
-    // Match by closest day-of-week first; if tie, longest activity
-    let best = null, bestScore = -Infinity;
     weekActs.forEach(act => {
-      if (used.has(act.id)) return;
-      const actDay = new Date(act.start).getDay();
-      const dayPenalty = Math.abs(actDay - ride.dayIdx);
-      // Saturday/Sunday slot: accept either
-      const adjustedPenalty = ride.id === 'sat' ? Math.min(Math.abs(actDay - 6), Math.abs(actDay - 0)) : dayPenalty;
-      const minutes = act.moving_time / 60;
-      const durationMatch = minutes >= ride.targetMin * 0.7 ? 10 : 0;
-      const score = -adjustedPenalty * 5 + durationMatch + minutes / 30;
-      if (score > bestScore) { bestScore = score; best = act; }
+      const s = scoreSlotActivity(ride, act);
+      if (s !== null && s > -10) pairs.push({ ride, act, score: s });
     });
+  });
 
+  // Sort highest score first, then assign greedily
+  pairs.sort((a, b) => b.score - a.score);
+
+  const assignedRides = new Set();
+  const assignedActs = new Set();
+  const assignments = {};
+
+  for (const { ride, act, score } of pairs) {
+    if (assignedRides.has(ride.id) || assignedActs.has(act.id)) continue;
+    assignments[ride.id] = act;
+    assignedRides.add(ride.id);
+    assignedActs.add(act.id);
+  }
+
+  // Apply assignments. Don't clobber manual completions.
+  rides.forEach(ride => {
     const key = `${state.currentWeek}-${ride.id}`;
-    if (best && bestScore > 0) {
-      used.add(best.id);
+    const existing = state.rideCompletion[key];
+    if (existing && !existing.auto) return; // user marked it manually, leave it
+
+    const act = assignments[ride.id];
+    if (act) {
       state.rideCompletion[key] = {
         auto: true,
-        activityId: best.id,
-        name: best.name,
-        startDate: best.start,
-        watts: best.weighted_avg_watts || best.avg_watts,
-        avgWatts: best.avg_watts,
-        hr: best.avg_hr,
-        distance: best.distance,
-        duration: best.moving_time,
-        deviceWatts: best.device_watts,
+        activityId: act.id,
+        name: act.name,
+        startDate: act.start_local || act.start,
+        watts: act.weighted_avg_watts || act.avg_watts,
+        avgWatts: act.avg_watts,
+        hr: act.avg_hr,
+        distance: act.distance,
+        duration: act.moving_time,
+        deviceWatts: act.device_watts,
       };
-    } else {
-      // Don't clobber a manual completion
-      if (state.rideCompletion[key]?.auto) delete state.rideCompletion[key];
+    } else if (existing?.auto) {
+      delete state.rideCompletion[key];
     }
   });
   saveState();
