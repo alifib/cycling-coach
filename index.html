@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Coach — Road to 3 W/kg</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1410;
+    --bg-elev: #161d18;
+    --bg-elev-2: #1d2620;
+    --ink: #e8e4d8;
+    --ink-dim: #9aa097;
+    --ink-faint: #5a6259;
+    --accent: #c8ff5a;
+    --accent-warm: #ff8a3d;
+    --line: #2a332d;
+    --danger: #ff6b6b;
+    --good: #c8ff5a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    font-feature-settings: "ss01", "ss02";
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at top right, rgba(200,255,90,0.04), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(255,138,61,0.03), transparent 50%),
+      var(--bg);
+  }
+  .grain {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    z-index: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  }
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+  header.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 18px;
+    margin-bottom: 32px;
+  }
+  .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+  }
+  .brand .dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
+    margin-right: 8px; transform: translateY(-1px);
+    box-shadow: 0 0 12px var(--accent);
+  }
+  .brand .strava-status {
+    margin-left: 14px;
+    padding-left: 14px;
+    border-left: 1px solid var(--line);
+  }
+  .brand .strava-status.connected { color: var(--accent); }
+  .brand .strava-status.error { color: var(--danger); }
+  h1 {
+    font-weight: 900;
+    font-size: clamp(40px, 7vw, 76px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin: 8px 0 6px;
+    font-variation-settings: "opsz" 144;
+  }
+  h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+  }
+  nav.tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav.tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    background: none;
+    border: none;
+    color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 14px 16px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+  .tab:hover { color: var(--ink-dim); }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .panel { display: none; animation: fade 0.3s ease; }
+  .panel.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card h2::before {
+    content: "";
+    display: inline-block;
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  .card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    padding: 20px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .stat .val {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-variation-settings: "opsz" 144;
+  }
+  .stat .val small {
+    font-size: 14px;
+    color: var(--ink-dim);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+  .stat .delta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    margin-top: 6px;
+    color: var(--ink-dim);
+  }
+  .stat .delta.good { color: var(--good); }
+  .stat .delta.bad { color: var(--accent-warm); }
+  .stat.feature {
+    background: linear-gradient(135deg, rgba(200,255,90,0.08), transparent 60%), var(--bg-elev);
+    border-color: rgba(200,255,90,0.25);
+  }
+  .stat.feature .val { color: var(--accent); }
+
+  .progress-bar {
+    height: 6px;
+    background: var(--bg-elev-2);
+    border-radius: 3px;
+    margin-top: 14px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-warm), var(--accent));
+    transition: width 0.6s ease;
+    border-radius: 3px;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-top: 6px;
+  }
+
+  .week-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .week-header .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .week-header .num {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .week-header .num em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .ride {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: center;
+  }
+  .ride:last-child { border-bottom: none; }
+  .ride .day {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .ride .body .name {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .ride .body .desc {
+    font-size: 14px;
+    color: var(--ink-dim);
+    line-height: 1.5;
+  }
+  .ride .body .actual {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .ride .check {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink-faint);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .ride .check:hover { border-color: var(--accent); color: var(--accent); }
+  .ride.done .check {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+  .ride.done.auto .check {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(200,255,90,0.2);
+  }
+  .ride.done .body .name { text-decoration: line-through; color: var(--ink-faint); }
+  .ride.done .body .desc { color: var(--ink-faint); }
+  .ride.recovery {
+    background: rgba(255,138,61,0.04);
+    border-radius: 4px;
+    padding-left: 12px; padding-right: 12px;
+    margin: 0 -12px;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: var(--bg-elev-2);
+    color: var(--ink-dim);
+    margin-right: 6px;
+  }
+  .badge.threshold { background: rgba(255,138,61,0.15); color: var(--accent-warm); }
+  .badge.z2 { background: rgba(200,255,90,0.12); color: var(--accent); }
+  .badge.long { background: rgba(154,160,151,0.15); color: var(--ink); }
+  .badge.recovery-tag { background: rgba(255,107,107,0.12); color: var(--danger); }
+  .badge.auto { background: rgba(200,255,90,0.15); color: var(--accent); }
+
+  .checkin-grid { display: grid; gap: 16px; }
+  .field label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 8px;
+  }
+  .field input, .field textarea, .field select {
+    width: 100%;
+    background: var(--bg-elev-2);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 12px 14px;
+    border-radius: 3px;
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus {
+    outline: none; border-color: var(--accent);
+  }
+  .field textarea { min-height: 80px; resize: vertical; font-family: 'Fraunces', serif; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 540px) { .row2 { grid-template-columns: 1fr; } }
+
+  .scale { display: flex; gap: 6px; }
+  .scale button {
+    flex: 1;
+    background: var(--bg-elev-2);
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+    padding: 12px 0;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    transition: all 0.15s;
+  }
+  .scale button:hover { border-color: var(--ink-faint); }
+  .scale button.selected {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+
+  .btn {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 14px 24px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.1s, opacity 0.15s;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn.ghost {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+  }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.tiny {
+    padding: 8px 12px; font-size: 10px;
+  }
+
+  .coach-msg {
+    background: linear-gradient(135deg, rgba(200,255,90,0.06), transparent), var(--bg-elev);
+    border-left: 2px solid var(--accent);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    border-radius: 0 4px 4px 0;
+  }
+  .coach-msg .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+  .coach-msg .meta .who { color: var(--accent); }
+  .coach-msg p { font-size: 16px; line-height: 1.55; color: var(--ink); }
+  .coach-msg p + p { margin-top: 10px; }
+  .coach-msg.warn { border-left-color: var(--accent-warm); }
+  .coach-msg.warn .meta .who { color: var(--accent-warm); }
+
+  .history-row {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: center;
+    font-size: 14px;
+  }
+  .history-row .date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+  }
+  .history-row .summary { color: var(--ink-dim); }
+  .history-row .metric {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+  }
+
+  .empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+
+  .footer {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  .footer button {
+    background: none; border: none; color: var(--ink-faint);
+    font-family: inherit; font-size: inherit; letter-spacing: inherit;
+    cursor: pointer;
+  }
+  .footer button:hover { color: var(--danger); }
+
+  .chart {
+    height: 80px;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    margin-top: 16px;
+  }
+  .chart .bar {
+    flex: 1;
+    background: linear-gradient(180deg, var(--accent), rgba(200,255,90,0.3));
+    border-radius: 2px 2px 0 0;
+    min-height: 4px;
+    position: relative;
+    transition: height 0.5s ease;
+  }
+  .chart .bar:hover::after {
+    content: attr(data-val);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-elev-2);
+    padding: 4px 8px;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink);
+    white-space: nowrap;
+    margin-bottom: 4px;
+  }
+
+  .config-prompt {
+    background: rgba(255,138,61,0.08);
+    border: 1px dashed var(--accent-warm);
+    padding: 16px 18px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  .config-prompt p { color: var(--ink); margin-bottom: 10px; }
+  .config-prompt code {
+    background: var(--bg-elev-2);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border: 2px solid var(--line);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <div class="brand">
+        <span class="dot"></span>Coach
+        <span class="strava-status" id="strava-status">Strava: not configured</span>
+      </div>
+      <h1>Road to <em>3 W/kg</em></h1>
+      <div class="subtitle">98 kg · 190 W · build · sustain · arrive</div>
+    </div>
+  </header>
+
+  <div id="config-banner"></div>
+
+  <nav class="tabs">
+    <button class="tab active" data-panel="dashboard">Dashboard</button>
+    <button class="tab" data-panel="week">This Week</button>
+    <button class="tab" data-panel="checkin">Check-in</button>
+    <button class="tab" data-panel="coach">Coach</button>
+    <button class="tab" data-panel="history">History</button>
+    <button class="tab" data-panel="settings">Settings</button>
+  </nav>
+
+  <section class="panel active" id="dashboard">
+    <div class="stats">
+      <div class="stat feature">
+        <div class="lbl">W / kg</div>
+        <div class="val" id="wkg-now">—</div>
+        <div class="delta" id="wkg-delta">target 3.00</div>
+        <div class="progress-bar"><div class="progress-fill" id="wkg-progress"></div></div>
+        <div class="progress-meta"><span>1.94 start</span><span>3.00 target</span></div>
+      </div>
+      <div class="stat">
+        <div class="lbl">Weight</div>
+        <div class="val" id="weight-now">—<small>kg</small></div>
+        <div class="delta" id="weight-delta">target ~78 kg</div>
+      </div>
+      <div class="stat">
+        <div class="lbl">FTP</div>
+        <div class="val" id="ftp-now">—<small>w</small></div>
+        <div class="delta" id="ftp-delta">target ~235 W</div>
+      </div>
+      <div class="stat">
+        <div class="lbl">Streak</div>
+        <div class="val" id="streak">0<small>weeks</small></div>
+        <div class="delta">≥2 of 3 rides</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Block</h2>
+      <h3 id="block-name">Week 1 · Build</h3>
+      <p id="block-desc" style="color: var(--ink-dim); margin-top: 6px;"></p>
+      <div class="chart" id="weight-chart"></div>
+      <div class="progress-meta"><span>Weight trend (last 8 weeks)</span><span id="weight-trend"></span></div>
+    </div>
+
+    <div class="card">
+      <h2>Coach Reads</h2>
+      <div id="coach-summary"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="week">
+    <div class="card">
+      <div class="week-header">
+        <div>
+          <div class="label">Current Week</div>
+          <div class="num" id="week-num">Week <em>1</em></div>
+        </div>
+        <div style="text-align: right;">
+          <div class="label" id="week-type">Build</div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-faint);" id="week-dates"></div>
+        </div>
+      </div>
+      <div id="rides"></div>
+      <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="btn ghost" onclick="prevWeek()">← Prev</button>
+        <button class="btn ghost" onclick="nextWeek()">Next →</button>
+        <button class="btn ghost" onclick="syncStrava()" id="sync-btn">↻ Sync Strava</button>
+        <button class="btn" onclick="goCheckin()">Complete Week</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Zone Targets · @ FTP <span id="ftp-display">190</span> W</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 8px;">
+        <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Z2 Endurance</div>
+          <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="z2-range">—</div>
+          <div style="font-size: 12px; color: var(--ink-dim);">65–75% FTP</div>
+        </div>
+        <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Sweet Spot</div>
+          <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="ss-range">—</div>
+          <div style="font-size: 12px; color: var(--ink-dim);">88–94% FTP</div>
+        </div>
+        <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Threshold</div>
+          <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="thr-range">—</div>
+          <div style="font-size: 12px; color: var(--ink-dim);">95–105% FTP</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="checkin">
+    <div class="card">
+      <h2>Weekly Check-in</h2>
+      <p style="color: var(--ink-dim); margin-bottom: 24px;">Sunday evening, ideally. Honest answers — that's what makes the plan adapt.</p>
+
+      <div class="checkin-grid">
+        <div class="row2">
+          <div class="field">
+            <label>Weight (kg)</label>
+            <input type="number" step="0.1" id="ci-weight" placeholder="e.g. 96.4" />
+          </div>
+          <div class="field">
+            <label>Resting HR (bpm, optional)</label>
+            <input type="number" id="ci-hr" placeholder="e.g. 58" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Energy level (1 wrecked → 5 buzzing)</label>
+          <div class="scale" id="ci-energy">
+            <button data-val="1">1</button><button data-val="2">2</button><button data-val="3">3</button><button data-val="4">4</button><button data-val="5">5</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Stress level (1 chill → 5 buried)</label>
+          <div class="scale" id="ci-stress">
+            <button data-val="1">1</button><button data-val="2">2</button><button data-val="3">3</button><button data-val="4">4</button><button data-val="5">5</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Motivation to ride (1 dread → 5 eager)</label>
+          <div class="scale" id="ci-motivation">
+            <button data-val="1">1</button><button data-val="2">2</button><button data-val="3">3</button><button data-val="4">4</button><button data-val="5">5</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>FTP test result, if you did one (W)</label>
+          <input type="number" id="ci-ftp" placeholder="leave blank if none" />
+        </div>
+
+        <div class="field">
+          <label>Notes — anything off, anything good</label>
+          <textarea id="ci-notes" placeholder="weather, work, sleep, weird sensations, wins..."></textarea>
+        </div>
+
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-faint); padding: 10px 0;">
+          Rides this week will be auto-detected from Strava: <span id="ci-rides-display">—</span>
+        </div>
+
+        <div>
+          <button class="btn" onclick="submitCheckin()">Submit & get coach reply</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="coach">
+    <div id="coach-feed"></div>
+  </section>
+
+  <section class="panel" id="history">
+    <div class="card">
+      <h2>Check-in History</h2>
+      <div id="history-list"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="settings">
+    <div class="card">
+      <h2>Strava Connection</h2>
+      <p style="color: var(--ink-dim); margin-bottom: 16px;">URL of your Cloudflare Worker proxy. Stored locally only. Leave blank to use the default below or to disable Strava entirely.</p>
+      <div class="field">
+        <label>Worker URL</label>
+        <input type="url" id="setting-worker-url" placeholder="https://your-worker.your-subdomain.workers.dev" />
+      </div>
+      <div style="display: flex; gap: 10px; margin-top: 12px;">
+        <button class="btn" onclick="saveSettings()">Save</button>
+        <button class="btn ghost" onclick="testConnection()">Test connection</button>
+      </div>
+      <div id="settings-msg" style="margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px;"></div>
+    </div>
+
+    <div class="card">
+      <h2>Plan Defaults</h2>
+      <div class="row2">
+        <div class="field">
+          <label>Starting weight (kg)</label>
+          <input type="number" step="0.1" id="setting-start-weight" />
+        </div>
+        <div class="field">
+          <label>Starting FTP (W)</label>
+          <input type="number" id="setting-start-ftp" />
+        </div>
+      </div>
+      <div style="margin-top: 12px;">
+        <button class="btn" onclick="savePlanDefaults()">Save defaults</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <span>Saved locally · Strava via your Worker · works offline (with cache)</span>
+    <button onclick="resetAll()">Reset all data</button>
+  </div>
+</div>
+
+<script>
+// ==================== CONFIG ====================
+// Default Worker URL — set this once after deploying the Worker.
+// You can also override via Settings tab (stored in localStorage).
+const DEFAULT_WORKER_URL = ''; // e.g. 'https://strava-coach.your-subdomain.workers.dev'
+
+// ==================== STATE ====================
+const STORAGE_KEY = 'cycling-coach-v2';
+
+const defaultState = {
+  startWeight: 98,
+  startFTP: 190,
+  targetWkg: 3.0,
+  currentWeek: 1,
+  weekStartDate: null,
+  rideCompletion: {},        // { "1-tue": { auto: true, activityId, name, watts, hr, distance, duration } }
+  checkins: [],
+  ftpHistory: [{ week: 0, value: 190 }],
+  weightHistory: [{ week: 0, value: 98 }],
+  workerUrl: '',
+  lastStravaSync: null,
+  cachedActivities: [],      // last fetched activities for offline fallback
+};
+
+let state = loadState();
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return { ...defaultState, ...JSON.parse(raw) };
+  } catch (e) {}
+  const s = { ...defaultState };
+  s.weekStartDate = mondayOf(new Date()).toISOString();
+  return s;
+}
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+}
+function resetAll() {
+  if (!confirm('Reset everything? All check-ins and progress will be lost.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = loadState();
+  renderAll();
+}
+
+function mondayOf(d) {
+  const date = new Date(d);
+  const day = date.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  date.setDate(date.getDate() + diff);
+  date.setHours(0,0,0,0);
+  return date;
+}
+
+function getWorkerUrl() {
+  return state.workerUrl || DEFAULT_WORKER_URL;
+}
+
+// ==================== PLAN STRUCTURE ====================
+function getWeekType(weekNum) {
+  const inCycle = ((weekNum - 1) % 4) + 1;
+  if (inCycle === 4) return 'recovery';
+  if (inCycle === 1 || inCycle === 3) return 'buildA';
+  return 'buildB';
+}
+
+function getCurrentFTP() { return state.ftpHistory[state.ftpHistory.length - 1].value; }
+function getCurrentWeight() { return state.weightHistory[state.weightHistory.length - 1].value; }
+
+function getRides(weekNum) {
+  const ftp = getCurrentFTP();
+  const z2low = Math.round(ftp * 0.65), z2high = Math.round(ftp * 0.75);
+  const ssLow = Math.round(ftp * 0.88), ssHigh = Math.round(ftp * 0.94);
+  const thrLow = Math.round(ftp * 0.95), thrHigh = Math.round(ftp * 1.05);
+  const type = getWeekType(weekNum);
+
+  if (type === 'recovery') {
+    return [
+      { id: 'tue', day: 'Tue', dayIdx: 2, targetMin: 60, name: 'Easy spin', desc: 'Pure Z2, very gentle. ~75 min if you feel like it, skip if not.', tags: ['z2', 'recovery-tag'] },
+      { id: 'sat', day: 'Sat / Sun', dayIdx: 6, targetMin: 100, name: 'Long Z2 — short version', desc: `~2 hrs, all Z2 (${z2low}–${z2high} W). No efforts.`, tags: ['z2', 'recovery-tag'] },
+    ];
+  }
+  if (type === 'buildA') {
+    return [
+      { id: 'tue', day: 'Tue', dayIdx: 2, targetMin: 90, name: 'Sweet Spot · 2×20', desc: `2 hrs total. After 30 min Z2 warm-up: 2×20 min @ ${ssLow}–${ssHigh} W with 5 min easy between. Cool down Z2.`, tags: ['threshold'] },
+      { id: 'thu', day: 'Thu', dayIdx: 4, targetMin: 90, name: 'Pure Z2', desc: `2 hrs strictly ${z2low}–${z2high} W. Conversational.`, tags: ['z2'] },
+      { id: 'sat', day: 'Sat / Sun', dayIdx: 6, targetMin: 150, name: 'Long ride', desc: `3 hrs. First 2 hrs Z2. Last hour: Z2, or 3×5 min tempo if fresh.`, tags: ['long'] },
+    ];
+  }
+  return [
+    { id: 'tue', day: 'Tue', dayIdx: 2, targetMin: 90, name: 'Threshold · 4×8', desc: `2 hrs total. 30 min warm-up, then 4×8 min @ ${thrLow}–${thrHigh} W with 4 min easy between. Cool down Z2.`, tags: ['threshold'] },
+    { id: 'thu', day: 'Thu', dayIdx: 4, targetMin: 90, name: 'Pure Z2', desc: `2 hrs strictly ${z2low}–${z2high} W. The boring one that builds the engine.`, tags: ['z2'] },
+    { id: 'sat', day: 'Sat / Sun', dayIdx: 6, targetMin: 150, name: 'Long ride', desc: `3 hrs. All Z2, or last 30 min as 4×3 min tempo if legs feel willing.`, tags: ['long'] },
+  ];
+}
+
+function getBlockInfo(weekNum) {
+  const type = getWeekType(weekNum);
+  if (type === 'recovery') return { name: `Week ${weekNum} · Recovery`, desc: 'Cut volume by ~40%, no hard efforts. Sleep more, eat well.' };
+  if (type === 'buildA') return { name: `Week ${weekNum} · Build (Sweet Spot)`, desc: 'Sweet-spot week. Tuesday 2×20 builds threshold without wrecking you.' };
+  return { name: `Week ${weekNum} · Build (Threshold)`, desc: 'Threshold week. The 4×8 lifts your FTP ceiling.' };
+}
+
+// ==================== STRAVA ====================
+async function fetchActivities(days = 14) {
+  const url = getWorkerUrl();
+  if (!url) return null;
+  try {
+    const res = await fetch(`${url}/activities?days=${days}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    state.cachedActivities = data;
+    state.lastStravaSync = Date.now();
+    saveState();
+    return data;
+  } catch (err) {
+    console.warn('Strava fetch failed:', err);
+    return null;
+  }
+}
+
+function matchActivitiesToRides() {
+  // For each ride slot in the current week, find best-matching activity from cached.
+  if (!state.cachedActivities || state.cachedActivities.length === 0) return;
+
+  const monday = new Date(state.weekStartDate);
+  const rides = getRides(state.currentWeek);
+  const used = new Set();
+
+  // Activities within this week, sorted by date
+  const weekActs = state.cachedActivities.filter(a => {
+    const d = new Date(a.start);
+    const dayDiff = Math.floor((d - monday) / 86400000);
+    return dayDiff >= 0 && dayDiff < 7;
+  }).sort((a,b) => new Date(a.start) - new Date(b.start));
+
+  rides.forEach(ride => {
+    // Match by closest day-of-week first; if tie, longest activity
+    let best = null, bestScore = -Infinity;
+    weekActs.forEach(act => {
+      if (used.has(act.id)) return;
+      const actDay = new Date(act.start).getDay();
+      const dayPenalty = Math.abs(actDay - ride.dayIdx);
+      // Saturday/Sunday slot: accept either
+      const adjustedPenalty = ride.id === 'sat' ? Math.min(Math.abs(actDay - 6), Math.abs(actDay - 0)) : dayPenalty;
+      const minutes = act.moving_time / 60;
+      const durationMatch = minutes >= ride.targetMin * 0.7 ? 10 : 0;
+      const score = -adjustedPenalty * 5 + durationMatch + minutes / 30;
+      if (score > bestScore) { bestScore = score; best = act; }
+    });
+
+    const key = `${state.currentWeek}-${ride.id}`;
+    if (best && bestScore > 0) {
+      used.add(best.id);
+      state.rideCompletion[key] = {
+        auto: true,
+        activityId: best.id,
+        name: best.name,
+        startDate: best.start,
+        watts: best.weighted_avg_watts || best.avg_watts,
+        avgWatts: best.avg_watts,
+        hr: best.avg_hr,
+        distance: best.distance,
+        duration: best.moving_time,
+        deviceWatts: best.device_watts,
+      };
+    } else {
+      // Don't clobber a manual completion
+      if (state.rideCompletion[key]?.auto) delete state.rideCompletion[key];
+    }
+  });
+  saveState();
+}
+
+async function syncStrava() {
+  const btn = document.getElementById('sync-btn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Syncing'; }
+  setStravaStatus('syncing');
+  const data = await fetchActivities(14);
+  if (data) {
+    matchActivitiesToRides();
+    setStravaStatus('connected');
+    renderAll();
+  } else {
+    setStravaStatus('error');
+  }
+  if (btn) { btn.disabled = false; btn.innerHTML = '↻ Sync Strava'; }
+}
+
+function setStravaStatus(s) {
+  const el = document.getElementById('strava-status');
+  el.classList.remove('connected', 'error');
+  if (!getWorkerUrl()) { el.textContent = 'Strava: not configured'; return; }
+  if (s === 'syncing') el.textContent = 'Strava: syncing…';
+  else if (s === 'connected') {
+    const t = state.lastStravaSync ? new Date(state.lastStravaSync).toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'}) : '';
+    el.textContent = `Strava: synced ${t}`;
+    el.classList.add('connected');
+  } else if (s === 'error') {
+    el.textContent = 'Strava: connection error';
+    el.classList.add('error');
+  } else {
+    el.textContent = 'Strava: ready';
+  }
+}
+
+function renderConfigBanner() {
+  const banner = document.getElementById('config-banner');
+  if (!getWorkerUrl()) {
+    banner.innerHTML = `
+      <div class="config-prompt">
+        <p><strong style="color: var(--accent-warm);">Strava not connected.</strong> Add your Cloudflare Worker URL in <strong>Settings</strong> to auto-detect rides. Until then, you can still mark rides manually.</p>
+      </div>`;
+  } else {
+    banner.innerHTML = '';
+  }
+}
+
+// ==================== RENDER ====================
+function renderAll() {
+  renderConfigBanner();
+  renderDashboard();
+  renderWeek();
+  renderHistory();
+  renderCoachFeed();
+  renderSettings();
+  setStravaStatus(getWorkerUrl() ? (state.cachedActivities?.length ? 'connected' : 'ready') : '');
+}
+
+function renderDashboard() {
+  const w = getCurrentWeight();
+  const ftp = getCurrentFTP();
+  const wkg = ftp / w;
+
+  document.getElementById('wkg-now').textContent = wkg.toFixed(2);
+  document.getElementById('weight-now').innerHTML = w.toFixed(1) + '<small>kg</small>';
+  document.getElementById('ftp-now').innerHTML = ftp + '<small>w</small>';
+
+  const start = state.startFTP / state.startWeight;
+  const target = state.targetWkg;
+  const pct = Math.max(0, Math.min(100, ((wkg - start) / (target - start)) * 100));
+  document.getElementById('wkg-progress').style.width = pct + '%';
+
+  const wDelta = w - state.startWeight;
+  const wd = document.getElementById('weight-delta');
+  wd.textContent = wDelta < 0 ? `▼ ${Math.abs(wDelta).toFixed(1)} kg from start` : wDelta > 0 ? `▲ ${wDelta.toFixed(1)} kg from start` : 'baseline';
+  wd.className = 'delta ' + (wDelta < 0 ? 'good' : wDelta > 0 ? 'bad' : '');
+
+  const fDelta = ftp - state.startFTP;
+  const fd = document.getElementById('ftp-delta');
+  fd.textContent = fDelta > 0 ? `▲ ${fDelta} W from start` : fDelta < 0 ? `▼ ${Math.abs(fDelta)} W from start` : 'baseline';
+  fd.className = 'delta ' + (fDelta > 0 ? 'good' : fDelta < 0 ? 'bad' : '');
+
+  let streak = 0;
+  for (let i = state.checkins.length - 1; i >= 0; i--) {
+    if (state.checkins[i].rides >= 2) streak++; else break;
+  }
+  document.getElementById('streak').innerHTML = streak + '<small>weeks</small>';
+
+  const block = getBlockInfo(state.currentWeek);
+  document.getElementById('block-name').textContent = block.name;
+  document.getElementById('block-desc').textContent = block.desc;
+
+  const chart = document.getElementById('weight-chart');
+  chart.innerHTML = '';
+  const recent = state.weightHistory.slice(-8);
+  if (recent.length > 1) {
+    const min = Math.min(...recent.map(p => p.value)) - 0.5;
+    const max = Math.max(...recent.map(p => p.value)) + 0.5;
+    recent.forEach(p => {
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      const h = ((p.value - min) / (max - min)) * 100;
+      bar.style.height = Math.max(4, h) + '%';
+      bar.dataset.val = p.value.toFixed(1) + ' kg';
+      chart.appendChild(bar);
+    });
+    const trend = recent[recent.length-1].value - recent[0].value;
+    document.getElementById('weight-trend').textContent = trend < 0 ? `▼ ${Math.abs(trend).toFixed(1)} kg` : trend > 0 ? `▲ ${trend.toFixed(1)} kg` : 'flat';
+  } else {
+    chart.innerHTML = '<div style="color: var(--ink-faint); font-style: italic; padding: 20px;">Submit a check-in to start tracking</div>';
+  }
+
+  const summary = document.getElementById('coach-summary');
+  const last = state.checkins[state.checkins.length - 1];
+  if (last && last.coach) {
+    summary.innerHTML = `<div class="coach-msg ${last.coach.tone}"><div class="meta"><span class="who">Coach</span> · ${formatDate(last.date)}</div><p>${last.coach.text}</p></div>`;
+  } else {
+    summary.innerHTML = '<p style="color: var(--ink-dim);">Submit your first weekly check-in to unlock coaching feedback. The plan adjusts based on what you tell me.</p>';
+  }
+}
+
+function renderWeek() {
+  const ftp = getCurrentFTP();
+  document.getElementById('ftp-display').textContent = ftp;
+  document.getElementById('z2-range').textContent = `${Math.round(ftp*0.65)}–${Math.round(ftp*0.75)} W`;
+  document.getElementById('ss-range').textContent = `${Math.round(ftp*0.88)}–${Math.round(ftp*0.94)} W`;
+  document.getElementById('thr-range').textContent = `${Math.round(ftp*0.95)}–${Math.round(ftp*1.05)} W`;
+
+  const wn = state.currentWeek;
+  document.getElementById('week-num').innerHTML = `Week <em>${wn}</em>`;
+  const type = getWeekType(wn);
+  document.getElementById('week-type').textContent = type === 'recovery' ? 'Recovery week' : type === 'buildA' ? 'Build · Sweet Spot' : 'Build · Threshold';
+
+  const monday = new Date(state.weekStartDate);
+  const sunday = new Date(monday); sunday.setDate(sunday.getDate() + 6);
+  document.getElementById('week-dates').textContent = `${shortDate(monday)} → ${shortDate(sunday)}`;
+
+  const rides = getRides(wn);
+  const container = document.getElementById('rides');
+  container.innerHTML = '';
+  rides.forEach(r => {
+    const key = `${wn}-${r.id}`;
+    const completion = state.rideCompletion[key];
+    const done = !!completion;
+    const auto = completion?.auto;
+
+    const div = document.createElement('div');
+    div.className = 'ride' + (done ? ' done' : '') + (auto ? ' auto' : '') + (type === 'recovery' ? ' recovery' : '');
+    const tags = (r.tags || []).map(t => `<span class="badge ${t}">${tagLabel(t)}</span>`).join('');
+    const autoBadge = auto ? '<span class="badge auto">Strava</span>' : '';
+
+    let actualHtml = '';
+    if (auto && completion) {
+      const km = (completion.distance / 1000).toFixed(1);
+      const mins = Math.round(completion.duration / 60);
+      const w = completion.watts ? `${Math.round(completion.watts)} W` : 'no power';
+      const hr = completion.hr ? ` · ${Math.round(completion.hr)} bpm` : '';
+      actualHtml = `<div class="actual">↳ ${completion.name} · ${km} km · ${mins} min · ${w}${hr}</div>`;
+    }
+
+    div.innerHTML = `
+      <div class="day">${r.day}</div>
+      <div class="body">
+        <div class="name">${tags}${autoBadge}${r.name}</div>
+        <div class="desc">${r.desc}</div>
+        ${actualHtml}
+      </div>
+      <button class="check" onclick="toggleRide('${key}')" title="${auto ? 'Auto-detected' : 'Toggle complete'}">${done ? '✓' : ''}</button>
+    `;
+    container.appendChild(div);
+  });
+
+  // update check-in display of rides count
+  const completedThisWeek = rides.filter(r => state.rideCompletion[`${wn}-${r.id}`]).length;
+  const display = document.getElementById('ci-rides-display');
+  if (display) display.textContent = `${completedThisWeek} of ${rides.length}`;
+}
+
+function tagLabel(t) {
+  return { z2: 'Z2', threshold: 'HARD', long: 'LONG', 'recovery-tag': 'RECOVERY', auto: 'STRAVA' }[t] || t.toUpperCase();
+}
+
+function toggleRide(key) {
+  if (state.rideCompletion[key]) {
+    delete state.rideCompletion[key];
+  } else {
+    state.rideCompletion[key] = { auto: false, manualAt: Date.now() };
+  }
+  saveState();
+  renderWeek();
+}
+
+function nextWeek() {
+  state.currentWeek++;
+  const next = new Date(state.weekStartDate); next.setDate(next.getDate() + 7);
+  state.weekStartDate = next.toISOString();
+  saveState();
+  syncStrava();
+  renderAll();
+}
+function prevWeek() {
+  if (state.currentWeek <= 1) return;
+  state.currentWeek--;
+  const prev = new Date(state.weekStartDate); prev.setDate(prev.getDate() - 7);
+  state.weekStartDate = prev.toISOString();
+  saveState();
+  renderAll();
+}
+function goCheckin() {
+  document.querySelector('.tab[data-panel="checkin"]').click();
+}
+
+// ==================== CHECK-IN ====================
+function setupScales() {
+  document.querySelectorAll('.scale').forEach(scale => {
+    scale.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        scale.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+    });
+  });
+}
+
+function getScale(id) {
+  const sel = document.querySelector(`#${id} button.selected`);
+  return sel ? parseInt(sel.dataset.val) : null;
+}
+function clearScale(id) {
+  document.querySelectorAll(`#${id} button`).forEach(b => b.classList.remove('selected'));
+}
+
+function submitCheckin() {
+  const weight = parseFloat(document.getElementById('ci-weight').value);
+  const hr = parseInt(document.getElementById('ci-hr').value) || null;
+  const energy = getScale('ci-energy');
+  const stress = getScale('ci-stress');
+  const motivation = getScale('ci-motivation');
+  const ftp = parseInt(document.getElementById('ci-ftp').value) || null;
+  const notes = document.getElementById('ci-notes').value.trim();
+
+  if (!weight || !energy || !stress || !motivation) {
+    alert('Fill weight, energy, stress, and motivation at minimum.');
+    return;
+  }
+
+  const wn = state.currentWeek;
+  const ridesPlanned = getRides(wn);
+  const ridesDone = ridesPlanned.filter(r => state.rideCompletion[`${wn}-${r.id}`]).length;
+
+  const checkin = {
+    date: new Date().toISOString(),
+    week: wn,
+    weight, hr,
+    rides: ridesDone,
+    ridesPlanned: ridesPlanned.length,
+    energy, stress, motivation, ftp, notes,
+  };
+
+  state.weightHistory.push({ week: wn, value: weight });
+  if (ftp) state.ftpHistory.push({ week: wn, value: ftp });
+
+  checkin.coach = generateCoachReply(checkin);
+  state.checkins.push(checkin);
+
+  state.currentWeek++;
+  const next = new Date(state.weekStartDate); next.setDate(next.getDate() + 7);
+  state.weekStartDate = next.toISOString();
+
+  saveState();
+
+  document.getElementById('ci-weight').value = '';
+  document.getElementById('ci-hr').value = '';
+  document.getElementById('ci-ftp').value = '';
+  document.getElementById('ci-notes').value = '';
+  ['ci-energy','ci-stress','ci-motivation'].forEach(clearScale);
+
+  renderAll();
+  document.querySelector('.tab[data-panel="coach"]').click();
+}
+
+// ==================== COACH ====================
+function generateCoachReply(c) {
+  const prev = state.checkins[state.checkins.length - 1] || null;
+  const wkg = getCurrentFTP() / c.weight;
+  const weightTrend = prev ? c.weight - prev.weight : 0;
+  const lines = [];
+  let tone = 'normal';
+  const planned = c.ridesPlanned || 3;
+
+  if (c.rides === 0) {
+    tone = 'warn';
+    lines.push(`Zero rides — that happens. No guilt-trip from me. The question is what got in the way: weather, work, or tired-from-the-bones?`);
+    if (c.stress >= 4) lines.push(`Your stress is at ${c.stress}/5, so this isn't a discipline problem — it's a load problem. Treat next week as recovery regardless of cycle. One Z2 ride. That's the whole assignment.`);
+    else lines.push(`Aim for one ride next week, indoor if needed. Just the Thursday Z2 — re-anchor the habit before stacking volume back on.`);
+  } else if (c.rides === 1) {
+    lines.push(`One ride is a save, not a failure. Keep the streak alive — that matters more than hitting numbers.`);
+    if (c.motivation <= 2) lines.push(`Motivation at ${c.motivation}/5 is the bigger signal. Pick one route you actually enjoy this week and ride it Z2.`);
+  } else if (c.rides === 2 || (planned === 2 && c.rides === 2)) {
+    lines.push(`${c.rides} of ${planned} rides done — solid floor while you're rebuilding.`);
+  } else if (c.rides >= planned) {
+    lines.push(`${c.rides} for ${planned}. That's the rhythm. Don't reward yourself by adding a fourth — discipline is staying consistent, not stacking volume.`);
+  }
+
+  if (state.weightHistory.length >= 2) {
+    if (weightTrend < -1.0) {
+      tone = 'warn';
+      lines.push(`Weight dropped ${Math.abs(weightTrend).toFixed(1)} kg in a week. Too fast — that's lean tissue and watts going down with it. Add ~300 kcal/day next week, mostly carbs around your Tuesday session.`);
+    } else if (weightTrend < -0.2) {
+      lines.push(`Weight down ${Math.abs(weightTrend).toFixed(1)} kg — clean rate. This is the lever doing most of the work toward 3 W/kg.`);
+    } else if (weightTrend > 0.5) {
+      lines.push(`Weight up ${weightTrend.toFixed(1)} kg. Could be water — don't react yet. If it holds two weeks, tighten food by ~200 kcal/day.`);
+    }
+  }
+
+  if (c.ftp) {
+    const prevFTP = state.ftpHistory[state.ftpHistory.length - 2]?.value || state.startFTP;
+    const ftpDelta = c.ftp - prevFTP;
+    if (ftpDelta > 0) lines.push(`FTP +${ftpDelta} W. Zones updated automatically. Current W/kg: ${wkg.toFixed(2)}.`);
+    else if (ftpDelta < 0) lines.push(`FTP came in lower. Don't read too much into one test — fatigue, sleep, day-of can swing it 10+ W. Hold the previous zones for one more week and re-test.`);
+  }
+
+  if (c.energy <= 2 && c.motivation <= 2) {
+    tone = 'warn';
+    lines.push(`Energy ${c.energy}/5 + motivation ${c.motivation}/5 = a cooked nervous system. Next week: cut to 2 rides, both Z2. Don't argue. Adaptation happens in recovery, not in the saddle.`);
+  } else if (c.stress >= 4 && c.energy <= 3) {
+    lines.push(`High stress (${c.stress}/5), middling energy. The Tuesday hard ride is optional this week — swap it for a third Z2 if life is heavy.`);
+  }
+
+  if (c.hr && prev?.hr) {
+    const hrDelta = c.hr - prev.hr;
+    if (hrDelta >= 5) {
+      tone = 'warn';
+      lines.push(`Resting HR jumped ${hrDelta} bpm. Real signal — illness brewing, fatigue, or poor sleep. Take 2 rest days before your next quality session.`);
+    }
+  }
+
+  if (c.notes) {
+    const n = c.notes.toLowerCase();
+    if (/(rain|wind|cold|wet|weather|dark)/.test(n)) lines.push(`Weather note logged. Indoor for the Z2 ride is fine — save outside time for the long ride when you can pick the better day.`);
+    if (/(bored|same|route|tired of)/.test(n)) lines.push(`On boredom: this week, do the Thursday Z2 in reverse, or pick a route 30 min from home you've never done. Novelty is a training input.`);
+  }
+
+  if (state.checkins.length > 0 && state.checkins.length % 4 === 3) {
+    lines.push(`~4 weeks in. Step back and look at the trend, not the week. W/kg now: ${wkg.toFixed(2)} (started 1.94). Progress is rarely linear — keep showing up.`);
+  }
+
+  if (wkg >= 2.5 && (!prev || (getCurrentFTP() / prev.weight) < 2.5)) {
+    lines.push(`🎯 Crossed 2.5 W/kg. Halfway there. Don't celebrate by adding load — celebrate by holding the plan.`);
+  }
+  if (wkg >= 3.0) {
+    lines.push(`🎯 You hit 3 W/kg. Mission accomplished. Now we talk about what's next — maintain, or chase higher?`);
+  }
+
+  if (lines.length === 0) {
+    lines.push(`Solid week. Nothing flashing red, nothing to overthink. Hit the same beats next week.`);
+  }
+
+  return { tone, text: lines.join('</p><p>') };
+}
+
+// ==================== HISTORY & FEED ====================
+function renderHistory() {
+  const list = document.getElementById('history-list');
+  if (state.checkins.length === 0) {
+    list.innerHTML = '<div class="empty">No check-ins yet. Submit your first one Sunday.</div>';
+    return;
+  }
+  list.innerHTML = '';
+  [...state.checkins].reverse().forEach(c => {
+    const wkg = (state.ftpHistory.find(f => f.week <= c.week)?.value || state.startFTP) / c.weight;
+    const div = document.createElement('div');
+    div.className = 'history-row';
+    div.innerHTML = `
+      <div class="date">W${c.week} · ${shortDate(new Date(c.date))}</div>
+      <div class="summary">${c.weight.toFixed(1)} kg · ${c.rides}/${c.ridesPlanned||3} rides · energy ${c.energy} · stress ${c.stress}${c.notes ? ' · "' + c.notes.slice(0, 50) + (c.notes.length > 50 ? '…' : '') + '"' : ''}</div>
+      <div class="metric">${wkg.toFixed(2)} W/kg</div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function renderCoachFeed() {
+  const feed = document.getElementById('coach-feed');
+  if (state.checkins.length === 0) {
+    feed.innerHTML = `
+      <div class="card">
+        <h2>Coach Feed</h2>
+        <p style="color: var(--ink-dim); margin-bottom: 14px;">I'll check in with you here every week after your Sunday submission. Honest answers in the check-in get you honest coaching back. The plan adapts to what you report.</p>
+        <p style="color: var(--ink-dim);"><strong style="color: var(--ink);">First-week framing:</strong> don't try to be a hero. Hit the rides, eat enough to fuel them, weigh in once. The first 4 weeks establish rhythm; we tune from there.</p>
+      </div>`;
+    return;
+  }
+  feed.innerHTML = '';
+  [...state.checkins].reverse().forEach(c => {
+    if (!c.coach) return;
+    const div = document.createElement('div');
+    div.className = `coach-msg ${c.coach.tone}`;
+    div.innerHTML = `
+      <div class="meta"><span class="who">Coach</span> · Week ${c.week} · ${formatDate(c.date)}</div>
+      <p>${c.coach.text}</p>
+    `;
+    feed.appendChild(div);
+  });
+}
+
+// ==================== SETTINGS ====================
+function renderSettings() {
+  document.getElementById('setting-worker-url').value = state.workerUrl || '';
+  document.getElementById('setting-start-weight').value = state.startWeight;
+  document.getElementById('setting-start-ftp').value = state.startFTP;
+}
+
+function saveSettings() {
+  const url = document.getElementById('setting-worker-url').value.trim().replace(/\/$/, '');
+  state.workerUrl = url;
+  saveState();
+  const msg = document.getElementById('settings-msg');
+  msg.textContent = '✓ Saved. Click "Test connection" to verify.';
+  msg.style.color = 'var(--accent)';
+  renderConfigBanner();
+  setStravaStatus(url ? 'ready' : '');
+}
+
+async function testConnection() {
+  const msg = document.getElementById('settings-msg');
+  const url = (document.getElementById('setting-worker-url').value || state.workerUrl || '').trim().replace(/\/$/, '');
+  if (!url) { msg.textContent = '✗ Enter a Worker URL first.'; msg.style.color = 'var(--danger)'; return; }
+  msg.innerHTML = '<span class="spinner"></span> Testing…';
+  msg.style.color = 'var(--ink-dim)';
+  try {
+    const res = await fetch(`${url}/activities?days=7`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error + ': ' + (data.message || ''));
+    msg.textContent = `✓ Connection works. ${Array.isArray(data) ? data.length : 0} rides found in last 7 days.`;
+    msg.style.color = 'var(--accent)';
+  } catch (err) {
+    msg.textContent = `✗ Failed: ${err.message}`;
+    msg.style.color = 'var(--danger)';
+  }
+}
+
+function savePlanDefaults() {
+  const w = parseFloat(document.getElementById('setting-start-weight').value);
+  const f = parseInt(document.getElementById('setting-start-ftp').value);
+  if (!w || !f) { alert('Both fields required'); return; }
+  state.startWeight = w;
+  state.startFTP = f;
+  // Update the seed history if no real data yet
+  if (state.weightHistory.length === 1 && state.weightHistory[0].week === 0) state.weightHistory[0].value = w;
+  if (state.ftpHistory.length === 1 && state.ftpHistory[0].week === 0) state.ftpHistory[0].value = f;
+  saveState();
+  renderAll();
+}
+
+// ==================== UTIL ====================
+function shortDate(d) { return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }); }
+function formatDate(iso) { return new Date(iso).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); }
+
+// ==================== INIT ====================
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.panel).classList.add('active');
+  });
+});
+
+setupScales();
+renderAll();
+
+// Auto-sync on load if configured
+if (getWorkerUrl()) {
+  syncStrava();
+}
+</script>
+</body>
+</html>
