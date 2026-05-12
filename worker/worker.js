@@ -7,6 +7,7 @@
 // the iOS share sheet — file shares from Safari don’t surface Companion,
 // but URL shares do.
 //
+
 // Secrets needed (set via Cloudflare dashboard → Worker → Settings → Variables):
 //   STRAVA_CLIENT_ID
 //   STRAVA_CLIENT_SECRET
