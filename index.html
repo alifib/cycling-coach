@@ -1637,19 +1637,22 @@ function downloadZwo(weekNum, rideId) {
   if (!xml) return;
   const safeName = ride.name.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
   const filename = `w${weekNum}-${rideId}-${safeName}.zwo`;
+  // Blob for download fallback uses xml mime so the file content is correct.
   const blob = new Blob([xml], { type: 'application/xml' });
 
-  // Try Web Share API on mobile — iOS native share sheet includes Hammerhead Companion
-  // which syncs directly to Karoo. NOTE: Apple has a long-standing bug where the share
-  // promise never resolves for file shares (iOS 14+, still broken as of iOS 18).
-  // So we fire-and-forget — do NOT await. The user will dismiss the share sheet themselves.
+  // Try Web Share API on mobile. NOTE: iOS Hammerhead Companion doesn't appear in the
+  // share sheet when the file's MIME type is application/xml — iOS filters share targets
+  // by UTI. Using application/octet-stream tells iOS "this is a generic file", which
+  // surfaces a broader set of file-accepting apps, including Hammerhead Companion.
+  // The .zwo extension on the filename is what Hammerhead actually inspects.
+  // NOTE 2: Apple has a long-standing bug where the share promise never resolves for
+  // file shares — so this is fire-and-forget (no await).
   if (navigator.share && navigator.canShare) {
     try {
-      const file = new File([blob], filename, { type: 'application/xml' });
+      const shareBlob = new Blob([xml], { type: 'application/octet-stream' });
+      const file = new File([shareBlob], filename, { type: 'application/octet-stream' });
       if (navigator.canShare({ files: [file] })) {
-        // Fire and forget. Don't await — the promise won't resolve on iOS even on success.
-        // Catch is needed to silence the eventual unhandled rejection if the user cancels.
-        navigator.share({ files: [file] }).catch(() => { /* user cancelled or share failed */ });
+        navigator.share({ files: [file] }).catch(() => { /* user cancelled */ });
         return;
       }
     } catch (err) {
