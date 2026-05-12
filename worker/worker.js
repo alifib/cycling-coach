@@ -1,21 +1,20 @@
-// Cloudflare Worker — Strava proxy + .zwo workout host for cycling-coach
+// Cloudflare Worker – Strava proxy + .zwo workout host for cycling-coach
 // Holds Strava credentials as secrets. Exchanges refresh_token for a fresh
 // access_token on each request, then forwards activity queries to Strava.
 //
 // Also stores generated .zwo workout files in KV with a 24h TTL so the
 // page can share a URL (instead of a File) to Hammerhead Companion via
-// the iOS share sheet — file shares from Safari don’t surface Companion,
+// the iOS share sheet – file shares from Safari don’t surface Companion,
 // but URL shares do.
 //
-
-// Secrets needed (set via Cloudflare dashboard → Worker → Settings → Variables):
+// Secrets needed (set via Cloudflare dashboard -> Worker -> Settings -> Variables):
 //   STRAVA_CLIENT_ID
 //   STRAVA_CLIENT_SECRET
 //   STRAVA_REFRESH_TOKEN
 //   ALLOWED_ORIGIN  (your Pages URL, e.g. https://cycling-coach.pages.dev)
 //
 // KV binding required:
-//   ZWO_KV  → namespace “cycling-coach-zwo”
+//   ZWO_KV  -> namespace “cycling-coach-zwo”
 
 export default {
 async fetch(request, env) {
@@ -47,12 +46,12 @@ try {
     }, allowed, origin);
   }
 
-  // POST /zwo — store workout XML, return a public URL
+  // POST /zwo -- store workout XML, return a public URL
   if (url.pathname === '/zwo' && request.method === 'POST') {
     return await storeZwo(request, env, allowed, origin);
   }
 
-  // GET /zwo/:id or /zwo/:id/:filename — serve a stored workout.
+  // GET /zwo/:id or /zwo/:id/:filename -- serve a stored workout.
   // Public, no CORS check (Companion fetches this server-side, not from a browser context).
   if (url.pathname.startsWith('/zwo/') && request.method === 'GET') {
     return await serveZwo(url, env);
@@ -145,7 +144,7 @@ headers: {
 // application/octet-stream prevents iOS from appending a content-type-derived
 // extension (.xml) when Shortcuts’ “Get Contents of URL” + “Save File” writes
 // the response to disk. With application/xml, the saved filename becomes
-// “workout.zwo.xml” — which Hammerhead Companion then rejects.
+// “workout.zwo.xml” – which Hammerhead Companion then rejects.
 ‘Content-Type’: ‘application/octet-stream’,
 ‘Content-Disposition’: `attachment; filename="${filename}"`,
 ‘Cache-Control’: ‘public, max-age=3600’,
