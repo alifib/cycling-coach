@@ -1,0 +1,7 @@
+name = "spring-smoke-25"
+main = "worker.js"
+compatibility_date = "2026-05-12"
+
+[[kv_namespaces]]
+binding = "ZWO_KV"
+id = "06ad8185e8434a9088d5978e17a93382"
