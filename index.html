@@ -1636,21 +1636,17 @@ function downloadZwo(weekNum, rideId) {
   const xml = generateZwo(ride);
   if (!xml) return;
   const safeName = ride.name.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
-  const filename = `w${weekNum}-${rideId}-${safeName}.zwo`;
-  // Blob for download fallback uses xml mime so the file content is correct.
-  const blob = new Blob([xml], { type: 'application/xml' });
+  const baseName = `w${weekNum}-${rideId}-${safeName}`;
 
-  // Try Web Share API on mobile. NOTE: iOS Hammerhead Companion doesn't appear in the
-  // share sheet when the file's MIME type is application/xml — iOS filters share targets
-  // by UTI. Using application/octet-stream tells iOS "this is a generic file", which
-  // surfaces a broader set of file-accepting apps, including Hammerhead Companion.
-  // The .zwo extension on the filename is what Hammerhead actually inspects.
-  // NOTE 2: Apple has a long-standing bug where the share promise never resolves for
-  // file shares — so this is fire-and-forget (no await).
+  // Try Web Share API on mobile.
+  // Empirically, Hammerhead Companion on iOS shows up in the share sheet for .xml files
+  // with application/xml MIME — but NOT for .zwo files or application/octet-stream.
+  // The Companion app processes the XML internally and recognises it as a workout.
+  // NOTE: Apple has a long-standing bug where the share promise never resolves on success,
+  // so this is fire-and-forget (no await).
   if (navigator.share && navigator.canShare) {
     try {
-      const shareBlob = new Blob([xml], { type: 'application/octet-stream' });
-      const file = new File([shareBlob], filename, { type: 'application/octet-stream' });
+      const file = new File([xml], `${baseName}.xml`, { type: 'application/xml' });
       if (navigator.canShare({ files: [file] })) {
         navigator.share({ files: [file] }).catch(() => { /* user cancelled */ });
         return;
@@ -1660,11 +1656,13 @@ function downloadZwo(weekNum, rideId) {
     }
   }
 
-  // Fallback: traditional download (desktop, or browsers without Web Share)
+  // Fallback: traditional download (desktop). Keep .zwo extension since Hammerhead
+  // Dashboard upload expects the .zwo extension on the file picker.
+  const blob = new Blob([xml], { type: 'application/xml' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = filename;
+  a.download = `${baseName}.zwo`;
   document.body.appendChild(a);
   a.click();
   setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
