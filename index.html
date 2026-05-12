@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -132,442 +131,441 @@
   .panel.active { display: block; }
   @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
-.card {
-background: var(–bg-elev);
-border: 1px solid var(–line);
-border-radius: 4px;
-padding: 24px;
-margin-bottom: 20px;
-}
-.card h2 {
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-color: var(–ink-dim);
-margin-bottom: 16px;
-display: flex;
-align-items: center;
-gap: 10px;
-}
-.card h2::before {
-content: “”;
-display: inline-block;
-width: 24px; height: 1px;
-background: var(–accent);
-}
-.card h3 {
-font-size: 22px;
-font-weight: 600;
-letter-spacing: -0.01em;
-margin-bottom: 8px;
-}
+  .card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card h2::before {
+    content: "";
+    display: inline-block;
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  .card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
 
-.stats {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-gap: 12px;
-margin-bottom: 20px;
-}
-.stat {
-background: var(–bg-elev);
-border: 1px solid var(–line);
-padding: 20px;
-border-radius: 4px;
-position: relative;
-overflow: hidden;
-}
-.stat .lbl {
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 9px;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-color: var(–ink-faint);
-margin-bottom: 6px;
-}
-.stat .val {
-font-size: 38px;
-font-weight: 700;
-letter-spacing: -0.02em;
-line-height: 1;
-font-variation-settings: “opsz” 144;
-}
-.stat .val small {
-font-size: 14px;
-color: var(–ink-dim);
-font-weight: 400;
-margin-left: 4px;
-}
-.stat .delta {
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 10px;
-margin-top: 6px;
-color: var(–ink-dim);
-}
-.stat .delta.good { color: var(–good); }
-.stat .delta.bad { color: var(–accent-warm); }
-.stat.feature {
-background: linear-gradient(135deg, rgba(200,255,90,0.08), transparent 60%), var(–bg-elev);
-border-color: rgba(200,255,90,0.25);
-}
-.stat.feature .val { color: var(–accent); }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    padding: 20px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .stat .val {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-variation-settings: "opsz" 144;
+  }
+  .stat .val small {
+    font-size: 14px;
+    color: var(--ink-dim);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+  .stat .delta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    margin-top: 6px;
+    color: var(--ink-dim);
+  }
+  .stat .delta.good { color: var(--good); }
+  .stat .delta.bad { color: var(--accent-warm); }
+  .stat.feature {
+    background: linear-gradient(135deg, rgba(200,255,90,0.08), transparent 60%), var(--bg-elev);
+    border-color: rgba(200,255,90,0.25);
+  }
+  .stat.feature .val { color: var(--accent); }
 
-.progress-bar {
-height: 6px;
-background: var(–bg-elev-2);
-border-radius: 3px;
-margin-top: 14px;
-overflow: hidden;
-}
-.progress-fill {
-height: 100%;
-background: linear-gradient(90deg, var(–accent-warm), var(–accent));
-transition: width 0.6s ease;
-border-radius: 3px;
-}
-.progress-meta {
-display: flex;
-justify-content: space-between;
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 10px;
-color: var(–ink-faint);
-margin-top: 6px;
-}
+  .progress-bar {
+    height: 6px;
+    background: var(--bg-elev-2);
+    border-radius: 3px;
+    margin-top: 14px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-warm), var(--accent));
+    transition: width 0.6s ease;
+    border-radius: 3px;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-top: 6px;
+  }
 
-.week-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 16px;
-padding-bottom: 12px;
-border-bottom: 1px solid var(–line);
-}
-.week-header .label {
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 10px;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-color: var(–ink-dim);
-}
-.week-header .num {
-font-size: 32px;
-font-weight: 700;
-letter-spacing: -0.02em;
-}
-.week-header .num em {
-font-style: italic;
-font-weight: 400;
-color: var(–accent);
-}
-.ride {
-display: grid;
-grid-template-columns: 80px 1fr auto;
-gap: 16px;
-padding: 18px 0;
-border-bottom: 1px solid var(–line);
-align-items: center;
-}
-.ride:last-child { border-bottom: none; }
-.ride .day {
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.1em;
-text-transform: uppercase;
-color: var(–ink-dim);
-}
-.ride .body .name {
-font-size: 17px;
-font-weight: 600;
-margin-bottom: 4px;
-}
-.ride .body .desc {
-font-size: 14px;
-color: var(–ink-dim);
-line-height: 1.5;
-}
-.ride .body .actual {
-margin-top: 8px;
-padding-top: 8px;
-border-top: 1px dashed var(–line);
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 11px;
-color: var(–accent);
-letter-spacing: 0.05em;
-}
-.ride .body .zwo-btn {
-display: inline-block;
-margin-top: 10px;
-background: transparent;
-border: 1px solid var(–line);
-color: var(–ink-dim);
-padding: 6px 10px;
-border-radius: 2px;
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 10px;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-cursor: pointer;
-transition: all 0.15s;
-}
-.ride .body .zwo-btn:hover {
-border-color: var(–accent);
-color: var(–accent);
-}
-.ride .check {
-width: 32px;
-height: 32px;
-border: 1px solid var(–line);
-border-radius: 50%;
-background: transparent;
-color: var(–ink-faint);
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 14px;
-transition: all 0.2s;
-flex-shrink: 0;
-}
-.ride .check:hover { border-color: var(–accent); color: var(–accent); }
-.ride.done .check {
-background: var(–accent);
-color: var(–bg);
-border-color: var(–accent);
-}
-.ride.done.auto .check {
-background: var(–accent);
-color: var(–bg);
-border-color: var(–accent);
-box-shadow: 0 0 0 2px rgba(200,255,90,0.2);
-}
-.ride.done .body .name { text-decoration: line-through; color: var(–ink-faint); }
-.ride.done .body .desc { color: var(–ink-faint); }
-.ride.recovery {
-background: rgba(255,138,61,0.04);
-border-radius: 4px;
-padding-left: 12px; padding-right: 12px;
-margin: 0 -12px;
-}
+  .week-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .week-header .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .week-header .num {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .week-header .num em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .ride {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: center;
+  }
+  .ride:last-child { border-bottom: none; }
+  .ride .day {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .ride .body .name {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .ride .body .desc {
+    font-size: 14px;
+    color: var(--ink-dim);
+    line-height: 1.5;
+  }
+  .ride .body .actual {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .ride .body .zwo-btn {
+    display: inline-block;
+    margin-top: 10px;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+    padding: 6px 10px;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .ride .body .zwo-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .ride .check {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink-faint);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .ride .check:hover { border-color: var(--accent); color: var(--accent); }
+  .ride.done .check {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+  .ride.done.auto .check {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(200,255,90,0.2);
+  }
+  .ride.done .body .name { text-decoration: line-through; color: var(--ink-faint); }
+  .ride.done .body .desc { color: var(--ink-faint); }
+  .ride.recovery {
+    background: rgba(255,138,61,0.04);
+    border-radius: 4px;
+    padding-left: 12px; padding-right: 12px;
+    margin: 0 -12px;
+  }
 
-.badge {
-display: inline-block;
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 9px;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-padding: 3px 8px;
-border-radius: 2px;
-background: var(–bg-elev-2);
-color: var(–ink-dim);
-margin-right: 6px;
-}
-.badge.threshold { background: rgba(255,138,61,0.15); color: var(–accent-warm); }
-.badge.z2 { background: rgba(200,255,90,0.12); color: var(–accent); }
-.badge.long { background: rgba(154,160,151,0.15); color: var(–ink); }
-.badge.recovery-tag { background: rgba(255,107,107,0.12); color: var(–danger); }
-.badge.auto { background: rgba(200,255,90,0.15); color: var(–accent); }
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: var(--bg-elev-2);
+    color: var(--ink-dim);
+    margin-right: 6px;
+  }
+  .badge.threshold { background: rgba(255,138,61,0.15); color: var(--accent-warm); }
+  .badge.z2 { background: rgba(200,255,90,0.12); color: var(--accent); }
+  .badge.long { background: rgba(154,160,151,0.15); color: var(--ink); }
+  .badge.recovery-tag { background: rgba(255,107,107,0.12); color: var(--danger); }
+  .badge.auto { background: rgba(200,255,90,0.15); color: var(--accent); }
 
-.checkin-grid { display: grid; gap: 16px; }
-.field label {
-display: block;
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 10px;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-color: var(–ink-dim);
-margin-bottom: 8px;
-}
-.field input, .field textarea, .field select {
-width: 100%;
-background: var(–bg-elev-2);
-border: 1px solid var(–line);
-color: var(–ink);
-padding: 12px 14px;
-border-radius: 3px;
-font-family: ‘Fraunces’, serif;
-font-size: 16px;
-transition: border-color 0.15s;
-}
-.field input:focus, .field textarea:focus, .field select:focus {
-outline: none; border-color: var(–accent);
-}
-.field textarea { min-height: 80px; resize: vertical; font-family: ‘Fraunces’, serif; }
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-@media (max-width: 540px) { .row2 { grid-template-columns: 1fr; } }
+  .checkin-grid { display: grid; gap: 16px; }
+  .field label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 8px;
+  }
+  .field input, .field textarea, .field select {
+    width: 100%;
+    background: var(--bg-elev-2);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 12px 14px;
+    border-radius: 3px;
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus {
+    outline: none; border-color: var(--accent);
+  }
+  .field textarea { min-height: 80px; resize: vertical; font-family: 'Fraunces', serif; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 540px) { .row2 { grid-template-columns: 1fr; } }
 
-.scale { display: flex; gap: 6px; }
-.scale button {
-flex: 1;
-background: var(–bg-elev-2);
-border: 1px solid var(–line);
-color: var(–ink-dim);
-padding: 12px 0;
-border-radius: 3px;
-cursor: pointer;
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 13px;
-transition: all 0.15s;
-}
-.scale button:hover { border-color: var(–ink-faint); }
-.scale button.selected {
-background: var(–accent);
-color: var(–bg);
-border-color: var(–accent);
-}
+  .scale { display: flex; gap: 6px; }
+  .scale button {
+    flex: 1;
+    background: var(--bg-elev-2);
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+    padding: 12px 0;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    transition: all 0.15s;
+  }
+  .scale button:hover { border-color: var(--ink-faint); }
+  .scale button.selected {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
 
-.btn {
-background: var(–accent);
-color: var(–bg);
-border: none;
-padding: 14px 24px;
-border-radius: 3px;
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-cursor: pointer;
-font-weight: 600;
-transition: transform 0.1s, opacity 0.15s;
-}
-.btn:hover { transform: translateY(-1px); }
-.btn.ghost {
-background: transparent;
-border: 1px solid var(–line);
-color: var(–ink-dim);
-}
-.btn.ghost:hover { border-color: var(–accent); color: var(–accent); }
-.btn.tiny {
-padding: 8px 12px; font-size: 10px;
-}
+  .btn {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 14px 24px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.1s, opacity 0.15s;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn.ghost {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+  }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.tiny {
+    padding: 8px 12px; font-size: 10px;
+  }
 
-.coach-msg {
-background: linear-gradient(135deg, rgba(200,255,90,0.06), transparent), var(–bg-elev);
-border-left: 2px solid var(–accent);
-padding: 18px 20px;
-margin-bottom: 16px;
-border-radius: 0 4px 4px 0;
-}
-.coach-msg .meta {
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 9px;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-color: var(–ink-faint);
-margin-bottom: 8px;
-}
-.coach-msg .meta .who { color: var(–accent); }
-.coach-msg p { font-size: 16px; line-height: 1.55; color: var(–ink); }
-.coach-msg p + p { margin-top: 10px; }
-.coach-msg.warn { border-left-color: var(–accent-warm); }
-.coach-msg.warn .meta .who { color: var(–accent-warm); }
+  .coach-msg {
+    background: linear-gradient(135deg, rgba(200,255,90,0.06), transparent), var(--bg-elev);
+    border-left: 2px solid var(--accent);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    border-radius: 0 4px 4px 0;
+  }
+  .coach-msg .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+  .coach-msg .meta .who { color: var(--accent); }
+  .coach-msg p { font-size: 16px; line-height: 1.55; color: var(--ink); }
+  .coach-msg p + p { margin-top: 10px; }
+  .coach-msg.warn { border-left-color: var(--accent-warm); }
+  .coach-msg.warn .meta .who { color: var(--accent-warm); }
 
-.history-row {
-display: grid;
-grid-template-columns: 100px 1fr auto;
-gap: 16px;
-padding: 14px 0;
-border-bottom: 1px solid var(–line);
-align-items: center;
-font-size: 14px;
-}
-.history-row .date {
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 11px;
-color: var(–ink-faint);
-}
-.history-row .summary { color: var(–ink-dim); }
-.history-row .metric {
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 13px;
-color: var(–accent);
-}
+  .history-row {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: center;
+    font-size: 14px;
+  }
+  .history-row .date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+  }
+  .history-row .summary { color: var(--ink-dim); }
+  .history-row .metric {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+  }
 
-.empty {
-padding: 40px 20px;
-text-align: center;
-color: var(–ink-faint);
-font-style: italic;
-}
+  .empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
 
-.footer {
-margin-top: 40px;
-padding-top: 24px;
-border-top: 1px solid var(–line);
-display: flex;
-justify-content: space-between;
-flex-wrap: wrap; gap: 10px;
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 10px;
-letter-spacing: 0.1em;
-color: var(–ink-faint);
-text-transform: uppercase;
-}
-.footer button {
-background: none; border: none; color: var(–ink-faint);
-font-family: inherit; font-size: inherit; letter-spacing: inherit;
-cursor: pointer;
-}
-.footer button:hover { color: var(–danger); }
+  .footer {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  .footer button {
+    background: none; border: none; color: var(--ink-faint);
+    font-family: inherit; font-size: inherit; letter-spacing: inherit;
+    cursor: pointer;
+  }
+  .footer button:hover { color: var(--danger); }
 
-.chart {
-height: 80px;
-display: flex;
-align-items: flex-end;
-gap: 4px;
-margin-top: 16px;
-}
-.chart .bar {
-flex: 1;
-background: linear-gradient(180deg, var(–accent), rgba(200,255,90,0.3));
-border-radius: 2px 2px 0 0;
-min-height: 4px;
-position: relative;
-transition: height 0.5s ease;
-}
-.chart .bar:hover::after {
-content: attr(data-val);
-position: absolute;
-bottom: 100%;
-left: 50%;
-transform: translateX(-50%);
-background: var(–bg-elev-2);
-padding: 4px 8px;
-border-radius: 2px;
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 10px;
-color: var(–ink);
-white-space: nowrap;
-margin-bottom: 4px;
-}
+  .chart {
+    height: 80px;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    margin-top: 16px;
+  }
+  .chart .bar {
+    flex: 1;
+    background: linear-gradient(180deg, var(--accent), rgba(200,255,90,0.3));
+    border-radius: 2px 2px 0 0;
+    min-height: 4px;
+    position: relative;
+    transition: height 0.5s ease;
+  }
+  .chart .bar:hover::after {
+    content: attr(data-val);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-elev-2);
+    padding: 4px 8px;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink);
+    white-space: nowrap;
+    margin-bottom: 4px;
+  }
 
-.config-prompt {
-background: rgba(255,138,61,0.08);
-border: 1px dashed var(–accent-warm);
-padding: 16px 18px;
-border-radius: 4px;
-margin-bottom: 20px;
-}
-.config-prompt p { color: var(–ink); margin-bottom: 10px; }
-.config-prompt code {
-background: var(–bg-elev-2);
-padding: 2px 6px;
-border-radius: 2px;
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 12px;
-}
+  .config-prompt {
+    background: rgba(255,138,61,0.08);
+    border: 1px dashed var(--accent-warm);
+    padding: 16px 18px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  .config-prompt p { color: var(--ink); margin-bottom: 10px; }
+  .config-prompt code {
+    background: var(--bg-elev-2);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
 
-.spinner {
-display: inline-block;
-width: 12px; height: 12px;
-border: 2px solid var(–line);
-border-top-color: var(–accent);
-border-radius: 50%;
-animation: spin 0.7s linear infinite;
-vertical-align: middle;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
+  .spinner {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border: 2px solid var(--line);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
-
 </head>
 <body>
 <div class="grain"></div>
@@ -621,21 +619,18 @@ vertical-align: middle;
       </div>
     </div>
 
-```
-<div class="card">
-  <h2>Block</h2>
-  <h3 id="block-name">Week 1 · Build</h3>
-  <p id="block-desc" style="color: var(--ink-dim); margin-top: 6px;"></p>
-  <div class="chart" id="weight-chart"></div>
-  <div class="progress-meta"><span>Weight trend (last 8 weeks)</span><span id="weight-trend"></span></div>
-</div>
+    <div class="card">
+      <h2>Block</h2>
+      <h3 id="block-name">Week 1 · Build</h3>
+      <p id="block-desc" style="color: var(--ink-dim); margin-top: 6px;"></p>
+      <div class="chart" id="weight-chart"></div>
+      <div class="progress-meta"><span>Weight trend (last 8 weeks)</span><span id="weight-trend"></span></div>
+    </div>
 
-<div class="card">
-  <h2>Coach Reads</h2>
-  <div id="coach-summary"></div>
-</div>
-```
-
+    <div class="card">
+      <h2>Coach Reads</h2>
+      <div id="coach-summary"></div>
+    </div>
   </section>
 
   <section class="panel" id="week">
@@ -659,29 +654,26 @@ vertical-align: middle;
       </div>
     </div>
 
-```
-<div class="card">
-  <h2>Zone Targets · @ FTP <span id="ftp-display">190</span> W</h2>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 8px;">
-    <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
-      <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Z2 Endurance</div>
-      <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="z2-range">—</div>
-      <div style="font-size: 12px; color: var(--ink-dim);">65–75% FTP</div>
+    <div class="card">
+      <h2>Zone Targets · @ FTP <span id="ftp-display">190</span> W</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 8px;">
+        <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Z2 Endurance</div>
+          <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="z2-range">—</div>
+          <div style="font-size: 12px; color: var(--ink-dim);">65–75% FTP</div>
+        </div>
+        <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Sweet Spot</div>
+          <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="ss-range">—</div>
+          <div style="font-size: 12px; color: var(--ink-dim);">88–94% FTP</div>
+        </div>
+        <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Threshold</div>
+          <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="thr-range">—</div>
+          <div style="font-size: 12px; color: var(--ink-dim);">95–105% FTP</div>
+        </div>
+      </div>
     </div>
-    <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
-      <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Sweet Spot</div>
-      <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="ss-range">—</div>
-      <div style="font-size: 12px; color: var(--ink-dim);">88–94% FTP</div>
-    </div>
-    <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
-      <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Threshold</div>
-      <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="thr-range">—</div>
-      <div style="font-size: 12px; color: var(--ink-dim);">95–105% FTP</div>
-    </div>
-  </div>
-</div>
-```
-
   </section>
 
   <section class="panel" id="checkin">
@@ -689,61 +681,58 @@ vertical-align: middle;
       <h2>Weekly Check-in</h2>
       <p style="color: var(--ink-dim); margin-bottom: 24px;">Sunday evening, ideally. Honest answers — that's what makes the plan adapt.</p>
 
-```
-  <div class="checkin-grid">
-    <div class="row2">
-      <div class="field">
-        <label>Weight (kg)</label>
-        <input type="number" step="0.1" id="ci-weight" placeholder="e.g. 96.4" />
+      <div class="checkin-grid">
+        <div class="row2">
+          <div class="field">
+            <label>Weight (kg)</label>
+            <input type="number" step="0.1" id="ci-weight" placeholder="e.g. 96.4" />
+          </div>
+          <div class="field">
+            <label>Resting HR (bpm, optional)</label>
+            <input type="number" id="ci-hr" placeholder="e.g. 58" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Energy level (1 wrecked → 5 buzzing)</label>
+          <div class="scale" id="ci-energy">
+            <button data-val="1">1</button><button data-val="2">2</button><button data-val="3">3</button><button data-val="4">4</button><button data-val="5">5</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Stress level (1 chill → 5 buried)</label>
+          <div class="scale" id="ci-stress">
+            <button data-val="1">1</button><button data-val="2">2</button><button data-val="3">3</button><button data-val="4">4</button><button data-val="5">5</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Motivation to ride (1 dread → 5 eager)</label>
+          <div class="scale" id="ci-motivation">
+            <button data-val="1">1</button><button data-val="2">2</button><button data-val="3">3</button><button data-val="4">4</button><button data-val="5">5</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>FTP test result, if you did one (W)</label>
+          <input type="number" id="ci-ftp" placeholder="leave blank if none" />
+        </div>
+
+        <div class="field">
+          <label>Notes — anything off, anything good</label>
+          <textarea id="ci-notes" placeholder="weather, work, sleep, weird sensations, wins..."></textarea>
+        </div>
+
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-faint); padding: 10px 0;">
+          Rides this week will be auto-detected from Strava: <span id="ci-rides-display">—</span>
+        </div>
+
+        <div>
+          <button class="btn" onclick="submitCheckin()">Submit & get coach reply</button>
+        </div>
       </div>
-      <div class="field">
-        <label>Resting HR (bpm, optional)</label>
-        <input type="number" id="ci-hr" placeholder="e.g. 58" />
-      </div>
     </div>
-
-    <div class="field">
-      <label>Energy level (1 wrecked → 5 buzzing)</label>
-      <div class="scale" id="ci-energy">
-        <button data-val="1">1</button><button data-val="2">2</button><button data-val="3">3</button><button data-val="4">4</button><button data-val="5">5</button>
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Stress level (1 chill → 5 buried)</label>
-      <div class="scale" id="ci-stress">
-        <button data-val="1">1</button><button data-val="2">2</button><button data-val="3">3</button><button data-val="4">4</button><button data-val="5">5</button>
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Motivation to ride (1 dread → 5 eager)</label>
-      <div class="scale" id="ci-motivation">
-        <button data-val="1">1</button><button data-val="2">2</button><button data-val="3">3</button><button data-val="4">4</button><button data-val="5">5</button>
-      </div>
-    </div>
-
-    <div class="field">
-      <label>FTP test result, if you did one (W)</label>
-      <input type="number" id="ci-ftp" placeholder="leave blank if none" />
-    </div>
-
-    <div class="field">
-      <label>Notes — anything off, anything good</label>
-      <textarea id="ci-notes" placeholder="weather, work, sleep, weird sensations, wins..."></textarea>
-    </div>
-
-    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-faint); padding: 10px 0;">
-      Rides this week will be auto-detected from Strava: <span id="ci-rides-display">—</span>
-    </div>
-
-    <div>
-      <button class="btn" onclick="submitCheckin()">Submit & get coach reply</button>
-    </div>
-  </div>
-</div>
-```
-
   </section>
 
   <section class="panel" id="coach">
@@ -772,25 +761,22 @@ vertical-align: middle;
       <div id="settings-msg" style="margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px;"></div>
     </div>
 
-```
-<div class="card">
-  <h2>Plan Defaults</h2>
-  <div class="row2">
-    <div class="field">
-      <label>Starting weight (kg)</label>
-      <input type="number" step="0.1" id="setting-start-weight" />
+    <div class="card">
+      <h2>Plan Defaults</h2>
+      <div class="row2">
+        <div class="field">
+          <label>Starting weight (kg)</label>
+          <input type="number" step="0.1" id="setting-start-weight" />
+        </div>
+        <div class="field">
+          <label>Starting FTP (W)</label>
+          <input type="number" id="setting-start-ftp" />
+        </div>
+      </div>
+      <div style="margin-top: 12px;">
+        <button class="btn" onclick="savePlanDefaults()">Save defaults</button>
+      </div>
     </div>
-    <div class="field">
-      <label>Starting FTP (W)</label>
-      <input type="number" id="setting-start-ftp" />
-    </div>
-  </div>
-  <div style="margin-top: 12px;">
-    <button class="btn" onclick="savePlanDefaults()">Save defaults</button>
-  </div>
-</div>
-```
-
   </section>
 
   <div class="footer">
@@ -1629,7 +1615,7 @@ ${xmlBlocks}
 </workout_file>`;
 }
 
-function downloadZwo(weekNum, rideId) {
+async function downloadZwo(weekNum, rideId) {
   const rides = getRides(weekNum);
   const ride = rides.find(r => r.id === rideId);
   if (!ride || !ride.workout) return;
@@ -1638,26 +1624,37 @@ function downloadZwo(weekNum, rideId) {
   const safeName = ride.name.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
   const baseName = `w${weekNum}-${rideId}-${safeName}`;
 
-  // Try Web Share API on mobile.
-  // Empirically, Hammerhead Companion on iOS shows up in the share sheet for .xml files
-  // with application/xml MIME — but NOT for .zwo files or application/octet-stream.
-  // The Companion app processes the XML internally and recognises it as a workout.
-  // NOTE: Apple has a long-standing bug where the share promise never resolves on success,
-  // so this is fire-and-forget (no await).
-  if (navigator.share && navigator.canShare) {
+  // On mobile: upload the workout to the Worker, get a URL, share the URL via Web Share.
+  // iOS Safari's share sheet exposes Hammerhead Companion for URL shares but NOT for file shares
+  // (Companion's share extension is registered for public.url, not public.xml).
+  // Companion fetches the URL → gets the .zwo → syncs to Karoo.
+  const workerUrl = getWorkerUrl();
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  if (isMobile && workerUrl && navigator.share) {
     try {
-      const file = new File([xml], `${baseName}.xml`, { type: 'application/xml' });
-      if (navigator.canShare({ files: [file] })) {
-        navigator.share({ files: [file] }).catch(() => { /* user cancelled */ });
-        return;
-      }
+      const filename = `${baseName}.zwo`;
+      const res = await fetch(`${workerUrl}/zwo`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ xml, filename }),
+      });
+      if (!res.ok) throw new Error(`upload failed: ${res.status}`);
+      const data = await res.json();
+      if (!data.url) throw new Error('no url in response');
+
+      // Fire-and-forget share. iOS has a known bug where the share promise
+      // never resolves on file shares, but URL shares are generally OK.
+      // Still don't await to avoid any chance of UI hanging.
+      navigator.share({ url: data.url, title: ride.name }).catch(() => { /* cancelled */ });
+      return;
     } catch (err) {
+      console.warn('Workout URL share failed, falling back to file download:', err);
       // Fall through to download
     }
   }
 
-  // Fallback: traditional download (desktop). Keep .zwo extension since Hammerhead
-  // Dashboard upload expects the .zwo extension on the file picker.
+  // Desktop, or no Worker URL configured, or upload failed: traditional download.
   const blob = new Blob([xml], { type: 'application/xml' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1690,6 +1687,5 @@ if (getWorkerUrl()) {
   syncStrava();
 }
 </script>
-
 </body>
 </html>
