@@ -30,7 +30,7 @@ export default {
 
     try {
       if (url.pathname === '/activities' && request.method === 'GET') {
-        const days = parseInt(url.searchParams.get('days') || '14', 10);
+        const days = Math.min(90, Math.max(1, parseInt(url.searchParams.get('days') || '14', 10) || 14));
         const data = await getRecentActivities(env, days);
         return json(data, allowed, origin);
       }
@@ -62,7 +62,8 @@ export default {
 
       return json({ error: 'not_found', path: url.pathname }, allowed, origin, 404);
     } catch (err) {
-      return json({ error: 'proxy_error', message: String(err.message || err) }, allowed, origin, 500);
+      console.error('Worker error:', err);
+      return json({ error: 'proxy_error', message: 'upstream error' }, allowed, origin, 500);
     }
   },
 };
@@ -152,6 +153,10 @@ async function serveZwo(url, env) {
 // ----------- Strava helpers -----------
 
 async function getAccessToken(env) {
+  if (env.ZWO_KV) {
+    const cached = await env.ZWO_KV.get('strava_token');
+    if (cached) return cached;
+  }
   const res = await fetch('https://www.strava.com/api/v3/oauth/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -164,9 +169,15 @@ async function getAccessToken(env) {
   });
   if (!res.ok) {
     const t = await res.text();
-    throw new Error(`token_refresh_failed:${res.status}:${t}`);
+    console.error('Strava token refresh failed:', res.status, t);
+    throw new Error(`token_refresh_failed:${res.status}`);
   }
   const data = await res.json();
+  if (env.ZWO_KV && data.expires_in) {
+    // Cache with a 5-minute buffer so we never serve a token that's about to expire.
+    const ttl = Math.max(60, data.expires_in - 300);
+    await env.ZWO_KV.put('strava_token', data.access_token, { expirationTtl: ttl });
+  }
   return data.access_token;
 }
 
