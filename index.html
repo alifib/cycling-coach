@@ -580,7 +580,7 @@ vertical-align: middle;
         <span class="strava-status" id="strava-status">Strava: not configured</span>
       </div>
       <h1>Road to <em>3 W/kg</em></h1>
-      <div class="subtitle">98 kg · 190 W · build · sustain · arrive</div>
+      <div class="subtitle" id="subtitle">98 kg · 190 W · build · sustain · arrive</div>
     </div>
   </header>
 
@@ -602,7 +602,7 @@ vertical-align: middle;
         <div class="val" id="wkg-now">—</div>
         <div class="delta" id="wkg-delta">target 3.00</div>
         <div class="progress-bar"><div class="progress-fill" id="wkg-progress"></div></div>
-        <div class="progress-meta"><span>1.94 start</span><span>3.00 target</span></div>
+        <div class="progress-meta"><span id="wkg-start">— start</span><span>3.00 target</span></div>
       </div>
       <div class="stat">
         <div class="lbl">Weight</div>
@@ -621,20 +621,18 @@ vertical-align: middle;
       </div>
     </div>
 
-```
-<div class="card">
-  <h2>Block</h2>
-  <h3 id="block-name">Week 1 · Build</h3>
-  <p id="block-desc" style="color: var(--ink-dim); margin-top: 6px;"></p>
-  <div class="chart" id="weight-chart"></div>
-  <div class="progress-meta"><span>Weight trend (last 8 weeks)</span><span id="weight-trend"></span></div>
-</div>
+    <div class="card">
+      <h2>Block</h2>
+      <h3 id="block-name">Week 1 · Build</h3>
+      <p id="block-desc" style="color: var(--ink-dim); margin-top: 6px;"></p>
+      <div class="chart" id="weight-chart"></div>
+      <div class="progress-meta"><span>Weight trend (last 8 weeks)</span><span id="weight-trend"></span></div>
+    </div>
 
-<div class="card">
-  <h2>Coach Reads</h2>
-  <div id="coach-summary"></div>
-</div>
-```
+    <div class="card">
+      <h2>Coach Reads</h2>
+      <div id="coach-summary"></div>
+    </div>
 
   </section>
 
@@ -659,28 +657,26 @@ vertical-align: middle;
       </div>
     </div>
 
-```
-<div class="card">
-  <h2>Zone Targets · @ FTP <span id="ftp-display">190</span> W</h2>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 8px;">
-    <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
-      <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Z2 Endurance</div>
-      <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="z2-range">—</div>
-      <div style="font-size: 12px; color: var(--ink-dim);">65–75% FTP</div>
+    <div class="card">
+      <h2>Zone Targets · @ FTP <span id="ftp-display">190</span> W</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 8px;">
+        <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Z2 Endurance</div>
+          <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="z2-range">—</div>
+          <div style="font-size: 12px; color: var(--ink-dim);">65–75% FTP</div>
+        </div>
+        <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Sweet Spot</div>
+          <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="ss-range">—</div>
+          <div style="font-size: 12px; color: var(--ink-dim);">88–94% FTP</div>
+        </div>
+        <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Threshold</div>
+          <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="thr-range">—</div>
+          <div style="font-size: 12px; color: var(--ink-dim);">95–105% FTP</div>
+        </div>
+      </div>
     </div>
-    <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
-      <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Sweet Spot</div>
-      <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="ss-range">—</div>
-      <div style="font-size: 12px; color: var(--ink-dim);">88–94% FTP</div>
-    </div>
-    <div style="background: var(--bg-elev-2); padding: 14px; border-radius: 3px;">
-      <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase;">Threshold</div>
-      <div style="font-size: 20px; font-weight: 600; margin-top: 4px;" id="thr-range">—</div>
-      <div style="font-size: 12px; color: var(--ink-dim);">95–105% FTP</div>
-    </div>
-  </div>
-</div>
-```
 
   </section>
 
@@ -772,24 +768,22 @@ vertical-align: middle;
       <div id="settings-msg" style="margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px;"></div>
     </div>
 
-```
-<div class="card">
-  <h2>Plan Defaults</h2>
-  <div class="row2">
-    <div class="field">
-      <label>Starting weight (kg)</label>
-      <input type="number" step="0.1" id="setting-start-weight" />
+    <div class="card">
+      <h2>Plan Defaults</h2>
+      <div class="row2">
+        <div class="field">
+          <label>Starting weight (kg)</label>
+          <input type="number" step="0.1" id="setting-start-weight" />
+        </div>
+        <div class="field">
+          <label>Starting FTP (W)</label>
+          <input type="number" id="setting-start-ftp" />
+        </div>
+      </div>
+      <div style="margin-top: 12px;">
+        <button class="btn" onclick="savePlanDefaults()">Save defaults</button>
+      </div>
     </div>
-    <div class="field">
-      <label>Starting FTP (W)</label>
-      <input type="number" id="setting-start-ftp" />
-    </div>
-  </div>
-  <div style="margin-top: 12px;">
-    <button class="btn" onclick="savePlanDefaults()">Save defaults</button>
-  </div>
-</div>
-```
 
   </section>
 
@@ -1124,19 +1118,26 @@ function matchActivitiesToRides() {
   saveState();
 }
 
+let _syncing = false;
 async function syncStrava() {
+  if (_syncing) return;
+  _syncing = true;
   const btn = document.getElementById('sync-btn');
   if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Syncing'; }
   setStravaStatus('syncing');
-  const data = await fetchActivities(14);
-  if (data) {
-    matchActivitiesToRides();
-    setStravaStatus('connected');
-    renderAll();
-  } else {
-    setStravaStatus('error');
+  try {
+    const data = await fetchActivities(14);
+    if (data) {
+      matchActivitiesToRides();
+      setStravaStatus('connected');
+      renderAll();
+    } else {
+      setStravaStatus('error');
+    }
+  } finally {
+    _syncing = false;
+    if (btn) { btn.disabled = false; btn.innerHTML = '↻ Sync Strava'; }
   }
-  if (btn) { btn.disabled = false; btn.innerHTML = '↻ Sync Strava'; }
 }
 
 function setStravaStatus(s) {
@@ -1192,6 +1193,8 @@ function renderDashboard() {
   const target = state.targetWkg;
   const pct = Math.max(0, Math.min(100, ((wkg - start) / (target - start)) * 100));
   document.getElementById('wkg-progress').style.width = pct + '%';
+  document.getElementById('wkg-start').textContent = start.toFixed(2) + ' start';
+  document.getElementById('subtitle').textContent = `${state.startWeight} kg · ${state.startFTP} W · build · sustain · arrive`;
 
   const wDelta = w - state.startWeight;
   const wd = document.getElementById('weight-delta');
@@ -1494,7 +1497,7 @@ function renderHistory() {
   }
   list.innerHTML = '';
   [...state.checkins].reverse().forEach(c => {
-    const wkg = (state.ftpHistory.find(f => f.week <= c.week)?.value || state.startFTP) / c.weight;
+    const wkg = ([...state.ftpHistory].reverse().find(f => f.week <= c.week)?.value || state.startFTP) / c.weight;
     const div = document.createElement('div');
     div.className = 'history-row';
     div.innerHTML = `
